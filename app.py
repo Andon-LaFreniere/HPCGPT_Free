@@ -27,10 +27,13 @@ client = AzureOpenAI(
 def index():
     return render_template('index.html')
 
-@app.route('/chat', methods=['POST'])
-def chat():
+@app.route('/ask', methods=['POST'])
+def ask():
     try:
         user_input = request.json.get('message', '')
+
+        if not user_input:
+            return jsonify({"error": "No question provided"}), 400
         
         # Configure data source
         extension_config = {
