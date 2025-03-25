@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPC Recovery Chatbot</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #ffffff;
+            width: 40%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            border-top: 5px solid #bb0000;
+        }
+        .logo {
+            width: 80px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        h2 {
+            color: #bb0000;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+        button {
+            background-color: #bb0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #900000;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            min-height: 40px;
+        }
+        .login-btn {
+            background-color: #0078D4; /* Microsoft's blue color */
+            margin-top: 20px;
+        }
+        .login-btn:hover {
+            background-color: #005fa3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>HPC Recovery Chatbot</h2>
+        <input type="text" id="question" placeholder="Enter your recovery question...">
+        <button onclick="askQuestion()">Ask</button>
+        <p id="response"></p>
+    </div>
+    <script>
+        async function askQuestion() {
+            const question = document.getElementById("question").value;
+            const responseElement = document.getElementById("response");
+
+            if (!question.trim()) {
+                responseElement.textContent = "Please enter a question!";
+                return;
+            }
+
+            try {
+                const response = await fetch('https://hpcgptfree-9e257e197d7c.herokuapp.com//ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({message: question })
+                });
+
+                const data = await response.json();
+                responseElement.textContent = data.response || "No response received.";
+            } catch (error) {
+                responseElement.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+    <img src="/static/logo.png" alt="Logo" class="logo">
+</body>
+</html>
